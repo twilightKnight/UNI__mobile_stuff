@@ -1,20 +1,13 @@
 const express = require('express');
-const fs = require('fs');
-const bP = require('body-parser');
 const  dir = __dirname;
-const dirPub = dir+'/public/html/';
-const dirScript = dir + '/public/'
+const dirPub = dir+'/dist/';
+const dirScript = dirPub+'/js/'
 
-const config = require('./config.json')
 
-const students = require("./students.json")
-
-let port = config.port
+let port = 8080
 
 let app = express();
 
-app.use(bP.urlencoded({extended:false}))
-app.use(bP.json())
 app.use((req,res,next)=>{
     let now = new Date();
     console.log(`[${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}]`+' '+(req.method)+' '+(req.url))
@@ -28,24 +21,24 @@ app.route('/')
         res.end
     })
 
-app.route("/students")
-    .get((req, res)=>{
-        res.status(200)
-        res.send(JSON.stringify(students))
+    app.route('/*.ttf')
+    .get((req,res)=>{
+        res.status(200);
+        res.sendFile(dirPub + req.url)
         res.end
     })
 
 app.route('/js/*')
     .get((req,res)=>{
         res.status(200)
-        res.sendFile(dirScript+req.url)
+        res.sendFile(dirPub+req.url)
         res.end
     })
 
-app.route('/css/*')
+app.route('/images/*')
     .get((req,res)=>{
         res.status(200)
-        res.sendFile(dirScript+req.url)
+        res.sendFile(dirPub+req.url)
         res.end
     })
 
