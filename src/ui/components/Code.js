@@ -47,8 +47,8 @@ export default function Code(props) {
 
     const deleteCode = (code)=>{
         let codes = isCodeList
-
-        codes.pop({"code":code})
+        
+        codes = codes.filter(item => item.code !== code)
         setCodeList(codes)
         LocalStorage.SetItem("Codes", codes)
 
